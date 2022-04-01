@@ -44,7 +44,9 @@ function ListOpenEnvelopes({ list, activePlayer, updateActiveUser, money, setPla
             setTimeout(() => {
                 let listCount = 0
                 let inUsers = setInterval(() => {
-                    listRef.current.childNodes[listCount].classList = ['outter-container']
+                    if (listRef.current.childNodes[listCount]) {
+                        listRef.current.childNodes[listCount].classList = ['outter-container']
+                    } 
                     if (listCount == 19) {
                         clearInterval(inUsers)
                         setFirstOrder(false)
