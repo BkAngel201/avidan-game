@@ -36,6 +36,7 @@ function StartGameComponent({ setStartGame, startGame }) {
 
             if (json.CardsContestInfo && json.EmployeesContestInfo) {
                 setCreateRaffleInfo(json)
+                setNewGame(true)
             }
         }
         reader.readAsText(fileContent);
