@@ -26,7 +26,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
     let [envelopesToShow, setEnvelopesToShow] = useState([])
     let [cardAnimated, setCardAnimated] = useState(0)
     let [pagesAmount, setPagesAmount] = useState([])
-    let [perPages, setPerPages] = useState(25)
+    let [perPages, setPerPages] = useState(10)
 
     //confetti
     const refAnimationInstance = useRef(null);
@@ -209,6 +209,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
                             }, 100)
                         })
                         setTimeout(() => {
+
                             setPage(page + 1)
                         }, 500)
                     }, 3000)
@@ -230,7 +231,11 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
             
             setEnvelopes([...JSON.parse(localStorage.getItem("raffleCards"))])
 
-            setPage(1)
+            if (localStorage.getItem('rafflePage')) {
+                setPage(parseInt(localStorage.getItem('rafflePage')))
+            } else {
+                setPage(1)
+            }
             document.addEventListener('keyup', function handler(e) {
                 e.stopPropagation()
                 e.preventDefault()
@@ -245,6 +250,8 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
 
     useEffect(() => {
         if (page) {
+            localStorage.setItem('raffleCards', JSON.stringify(envelopes))
+            localStorage.setItem('rafflePage', page)
             setEnvelopesToShow(envelopes.slice(((page - 1) * perPages), page * perPages))
         }
     }, [page])

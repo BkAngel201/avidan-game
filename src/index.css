@@ -835,3 +835,11 @@ button {
     button:disabled {
         background-color: #728572
     }
+input[type='file'] {
+    border: 1px solid white;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 245px;
+    color: white;
+    margin-bottom: 10px;
+}

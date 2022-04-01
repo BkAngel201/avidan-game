@@ -34,11 +34,17 @@ function App() {
         setPlayers(JSON.parse(localStorage.getItem("raffleEmployees")))
 
     }, [startGame])
+    useEffect(() => {
+        if (page) {
+            localStorage.setItem("raffleEmployees", JSON.stringify(players))
+        }
+    }, [page])
+
 
     return (
         <div className="app-container">
             <StartGameComponent setStartGame={setStartGame} startGame={startGame} />
-            {startGame &&
+            {players && players.length != 0 &&
                 <>
                     <ListOpenEnvelopes animateReorder={animateReorder} setAnimateReorder={setAnimateReorder} list={players} activePlayer={activePlayer} updateActiveUser={updateActiveUser} money={money} setPlayers={setPlayers} goToWinners={goToWinners} page={page} startGame={startGame} />
                     <Carrousel setAnimateReorder={setAnimateReorder} activePlayer={activePlayer} list={players} updateActiveUser={updateActiveUser} updateMoney={updateMoney} money={money} page={page} setPage={setPage} winnerInfo={winnerInfo} setGoToWinners={setGoToWinners} goToWinners={goToWinners} setLastWinners={setLastWinners} lastWinners={lastWinners} startGame={startGame} />

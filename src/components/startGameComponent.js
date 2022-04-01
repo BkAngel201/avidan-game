@@ -6,10 +6,15 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 function StartGameComponent({ setStartGame, startGame }) {
     const startRef = useRef()
     const [createRaffleInfo, setCreateRaffleInfo] = useState(null);
+    const [newGame, setNewGame] = useState(true);
 
 
     useEffect(() => {
         startRef.current.style.display = 'flex'
+        if (localStorage.getItem("raffleCards") && localStorage.getItem("raffleEmployees")) {
+            setNewGame(false)
+            setCreateRaffleInfo([])
+        }
     }, [])
 
     useEffect(() => {
@@ -29,15 +34,21 @@ function StartGameComponent({ setStartGame, startGame }) {
             let str = event.target.result;
             let json = JSON.parse(str);
 
-            setCreateRaffleInfo(json)
+            if (json.CardsContestInfo && json.EmployeesContestInfo) {
+                setCreateRaffleInfo(json)
+            }
         }
         reader.readAsText(fileContent);
 
     }
 
     const saveAndStartGame = () => {
-        localStorage.setItem("raffleCards", JSON.stringify(createRaffleInfo.CardsContestInfo))
-        localStorage.setItem("raffleEmployees", JSON.stringify(createRaffleInfo.EmployeesContestInfo))
+
+        if (newGame) {
+            localStorage.setItem("raffleCards", JSON.stringify(createRaffleInfo.CardsContestInfo))
+            localStorage.setItem("raffleEmployees", JSON.stringify(createRaffleInfo.EmployeesContestInfo))
+            localStorage.setItem('rafflePage', 1)
+        }
         setStartGame(true)
     }
 
@@ -51,8 +62,9 @@ function StartGameComponent({ setStartGame, startGame }) {
             <div className="middle">
                 <img src="./img/logoRafle.png" />
             </div>
+            <input type="file" onChange={handleFileSelected} accept=".json" />
             <div className="button">
-                <input type="file" onChange={handleFileSelected} accept=".json" />
+
                 <button onClick={saveAndStartGame} disabled={!createRaffleInfo}>
                     Begin the Party
                 </button>
