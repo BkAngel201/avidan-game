@@ -12,14 +12,28 @@ function Winner({ list, goToWinners, setGoToWinners, lastWinners }) {
     const topListRef = useRef()
     const buttonContinue = useRef()
     const [topWinners, setTopWinners] = useState([])
+    const [trumpetShort, setTrumpetShort] = useState(null)
+
+    useEffect(() => {
+        setTrumpetShort(new Audio('./audio/trumpetWinner.mp3'))
+    }, [])
+
     useEffect(() => {
         if (goToWinners) {
-            console.log(list)
+
+           
+            
             setTopWinners([...list].filter((l, index) => (index > 2 & index < 18)))
 
             setTimeout(() => {
                 winnerRef.current.style.display = 'block '
                 setTimeout(() => {
+                    trumpetShort.play().then(() => {
+                        setTimeout(() => {
+                            trumpetShort.pause()
+                            trumpetShort.currentTime = 0
+                        }, 7000)
+                    })
                     winnerRef.current.firstChild.classList.remove('hide')
                     winnerRef.current.classList.remove('hide')
                     setTimeout(() => {

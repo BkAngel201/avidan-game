@@ -50,7 +50,9 @@ function StartGameComponent({ setStartGame, startGame }) {
             localStorage.setItem("raffleEmployees", JSON.stringify(createRaffleInfo.EmployeesContestInfo))
             localStorage.setItem('rafflePage', 1)
         }
-        setStartGame(true)
+        setTimeout(() => {
+            setStartGame(true)
+        }, 1500)
     }
 
 
