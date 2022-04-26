@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 
 function StartGameComponent({ setStartGame, startGame }) {
     const startRef = useRef()
+    const fileRef = useRef()
     const [createRaffleInfo, setCreateRaffleInfo] = useState(null);
     const [newGame, setNewGame] = useState(true);
 
@@ -54,22 +55,26 @@ function StartGameComponent({ setStartGame, startGame }) {
             setStartGame(true)
         }, 1500)
     }
+    const selectFile = () => {
+        fileRef.current.click()
+        console.log('asd')
+    }
 
 
     return (
         <div className="start-container" ref={startRef}>
             <div className="title">
-                <div>Best of the Best F&I Managers Rafle</div>
-                <div>2022</div>
+                <div>Best of the Best</div>
+                <div>F&I Manager's Cash Bash 2022</div>
             </div>
             <div className="middle">
-                <img src="./img/logoRafle.png" />
+                <img src="./img/logoRafle.png" onClick={selectFile}/>
             </div>
-            <input type="file" onChange={handleFileSelected} accept=".json" />
+            <input type="file" onChange={handleFileSelected} accept=".json" ref={fileRef} style={{display: 'none'}}/>
             <div className="button">
 
                 <button onClick={saveAndStartGame} disabled={!createRaffleInfo}>
-                    Begin the Party
+                    Show Results
                 </button>
             </div>
         </div>

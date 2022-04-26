@@ -19,6 +19,8 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
     const [roll, setRoll] = useState(null)
     const [tada, setTada] = useState(null)
     const [fuzz, setFuzz] = useState(null)
+    const [whooshCards, setWhooshCards] = useState(null)
+    const [cardShuffle, setCardShuffle] = useState(null)
     let [envelopes, setEnvelopes] = useState(null)
     let [playing, setPlaying] = useState(null)
     let [stopOnNextEnvelope, setStopOnNextEnvelope] = useState(null)
@@ -26,7 +28,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
     let [envelopesToShow, setEnvelopesToShow] = useState([])
     let [cardAnimated, setCardAnimated] = useState(0)
     let [pagesAmount, setPagesAmount] = useState([])
-    let [perPages, setPerPages] = useState(25)
+    let [perPages, setPerPages] = useState(2)
 
     //confetti
     const refAnimationInstance = useRef(null);
@@ -43,6 +45,8 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
         setRoll(new Audio('./audio/roll.mp3'))
         setTada(new Audio('./audio/tada.mp3'))
         setFuzz(new Audio('./audio/fuzz.mp3'))
+        setWhooshCards(new Audio('./audio/whoosh-cards.mp3'))
+        setCardShuffle(new Audio('./audio/card-shuffle.mp3'))
     }, []);
 
     const nextTickAnimationSnow = useCallback(() => {
@@ -191,21 +195,32 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
                     listRef.current.childNodes[index].lastChild.style.top = 'calc(50% - 90px + (' + topOffset + 'px))';
                     listRef.current.childNodes[index].lastChild.style.left = 'calc(50% - 90px + (' + bottomOffset + 'px))';
                     setTimeout(() => {
+
                         listRef.current.childNodes[index].lastChild.style.top = 'calc(50% - 90px)';
                         listRef.current.childNodes[index].lastChild.style.left = 'calc(2500px)';
 
+                    }, 1800)
+                    setTimeout(() => {
+                        whooshCards.play().then(() => {
+                            setTimeout(() => {
+                                whooshCards.pause()
+                                whooshCards.currentTime = 0
+                            }, 5000)
+                        })
                     }, 1800)
                 })
                 if (page != pagesAmount.length) {
 
                     setTimeout(() => {
                         listRef.current.childNodes.forEach((el, index) => {
+                            console.log('a')
                             listRef.current.childNodes[index].lastChild.classList = 'envelope outside move-fast'
                             listRef.current.childNodes[index].lastChild.style.top = '-200px';
                             listRef.current.childNodes[index].lastChild.style.left = '50%';
                             setTimeout(() => {
                                 listRef.current.childNodes[index].lastChild.classList = 'envelope outside'
                                 listRef.current.childNodes[index].lastChild.firstChild.classList.remove('hide')
+
                             }, 100)
                         })
                         setTimeout(() => {
@@ -228,7 +243,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
             let temp = []
             let min = Math.ceil(0);
             let max = Math.floor(76);
-            
+
             setEnvelopes([...JSON.parse(localStorage.getItem("raffleCards"))])
 
             if (localStorage.getItem('rafflePage')) {
@@ -291,6 +306,16 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
 
     useEffect(() => {
         if (!envelopesToShow.some(e => e.count)) {
+            if (cardShuffle) {
+                setTimeout(() => {
+                    cardShuffle.play().then(() => {
+                        setTimeout(() => {
+                            cardShuffle.pause()
+                            cardShuffle.currentTime = 0
+                        }, 5000)
+                    })
+                }, 250)
+            }
 
             envelopesToShow.forEach((e, index) => {
                 setTimeout(() => {
@@ -301,6 +326,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
                 }, 50 * index)
 
             })
+
             if (playing) {
                 setTimeout(() => {
                     setGoToWinners(true)
