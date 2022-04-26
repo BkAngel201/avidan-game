@@ -28,7 +28,7 @@ function Carrousel({ activePlayer, updateActiveUser, updateMoney, page, setPage,
     let [envelopesToShow, setEnvelopesToShow] = useState([])
     let [cardAnimated, setCardAnimated] = useState(0)
     let [pagesAmount, setPagesAmount] = useState([])
-    let [perPages, setPerPages] = useState(2)
+    let [perPages, setPerPages] = useState(25)
 
     //confetti
     const refAnimationInstance = useRef(null);
